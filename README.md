@@ -1,5 +1,7 @@
 # Edxso Education AI · v1.2
 
+[![Quality and regression checks](https://github.com/rutsav075-sudo/Internship-1/actions/workflows/ci.yml/badge.svg)](https://github.com/rutsav075-sudo/Internship-1/actions/workflows/ci.yml)
+
 A working school FAQ assistant and conversational analytics workspace, aligned with the attached **AI Engineer Intern** job description. Python/FastAPI backend, scikit-learn NLP, server-side Gemini, SQLite and a responsive browser UI.
 
 > **Scope:** The PDF is an internship job description, not a project specification. The user approved this education assistant + analytics project and selected Gemini. This is an independent demonstration, not an official Edxso product or a real school's admissions system.
@@ -22,7 +24,7 @@ A working school FAQ assistant and conversational analytics workspace, aligned w
 - Added a protected operational monitoring panel/API with database status, model fingerprint, provider state, p95 answer time and fallback share. Monitoring does not invoke Gemini.
 - Added consistent online SQLite backups and safe restore-to-new-file tooling; verified against a snapshot of the actual preview database without replacing or modifying the live original.
 - Fixed the connection-test assumption that FAQs have a particular order/minimum length; a single-reference regression now passes.
-- Added isolated no-key browser checks to CI configuration; local equivalent passed, remote CI has not been executed here.
+- Added isolated no-key browser checks to CI configuration; local equivalent and the published GitHub Actions browser job both passed.
 - Updated the operations runbook, tests and source-package exclusions. See [OPERATIONS_RUNBOOK.md](OPERATIONS_RUNBOOK.md).
 
 ## What changed in v1.1
@@ -54,7 +56,7 @@ See [PDF_COMPLETION_AUDIT.md](PDF_COMPLETION_AUDIT.md), [TEST_REPORT.md](TEST_RE
 
 ## Run locally
 
-Verified here on **Python 3.13.16**. Use Python 3.13 for the closest match to the tested environment. The CI configuration also targets 3.11, but that remote job has not been executed here.
+Verified here on **Python 3.13.16**. Use Python 3.13 for the closest match to the tested environment. The published GitHub Actions backend jobs also passed on both Python 3.11 and 3.13.
 
 ```bash
 git clone https://github.com/rutsav075-sudo/Internship-1.git
@@ -178,7 +180,7 @@ npm run lint
 npm run format:check
 ```
 
-GitHub Actions config runs lint, format, tests, coverage, evaluation, experiments and isolated no-key browser checks; it has not been uploaded or executed remotely in this workspace.
+GitHub Actions runs lint, format, tests, coverage, evaluation, experiments and isolated no-key browser checks. All four published jobs passed (backend 3.11, backend 3.13, frontend and browser). [Verified initial publication run](https://github.com/rutsav075-sudo/Internship-1/actions/runs/41166106161). The badge above tracks the latest workflow status.
 
 ### Offline browser regression checks
 

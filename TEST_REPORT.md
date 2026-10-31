@@ -105,7 +105,7 @@ The fixed test was already observed during development and is small/synthetic; *
 - Shared-token, single-school auth and single-process limits are staging/demo choices, not production multitenancy.
 - Provider availability/quota/model access can change. Last success is timestamped/process-local, not a future availability guarantee.
 - Dependency upgrades removed the deprecation warnings observed in the earlier delivery. The current pinned environment passed, but future upgrades still require regression checks.
-- CI is configured, not remotely executed. Docker and cloud deployment remain unverified.
+- GitHub Actions was executed after publication: backend 3.11, backend 3.13, frontend and browser jobs passed. Docker and cloud deployment remain unverified.
 
 ## Evidence files
 
@@ -138,3 +138,12 @@ See `PDF_COMPLETION_AUDIT.md` for exact PDF coverage and production tasks that r
 The final check was repeated from a separate clean repository folder without the private `.env`, runtime database or developer caches. This caught a test-runner import-path issue that could break a direct `pytest` invocation in CI. Added an explicit project-root `pythonpath` in pytest configuration and changed CI to `python -m pytest`; both entry points now pass from the clean checkout. No live credential is required for the offline suite.
 
 Runtime `.env` variants, credentials, private-key files, databases/backups, artifacts and dependency caches are excluded from Git. The staged source was scanned for the supplied credentials and common token/private-key patterns before publishing.
+
+
+## Verified GitHub publication
+
+Repository: https://github.com/rutsav075-sudo/Internship-1  
+Initial application commit: `11f5cb2074e6db534ec54eb21a960f644a5a6f28`  
+Remote CI evidence: https://github.com/rutsav075-sudo/Internship-1/actions/runs/41166106161
+
+All four GitHub jobs concluded **success**: backend (3.11), backend (3.13), frontend and browser. This verifies the published source in clean remote runners; it is not a production deployment or a zero-defect guarantee. Secrets, the runtime `.env`, databases/backups, generated artifacts and dependency directories were not committed.
