@@ -1,0 +1,17 @@
+{
+  "name": "edxso-education-ai-quality",
+  "private": true,
+  "version": "1.2.0",
+  "description": "Optional frontend quality checks. No Node build or server is required to run the app.",
+  "scripts": {
+    "lint": "eslint app/static/app.js",
+    "format:check": "prettier --check app/static/*.{js,html,css}",
+    "format": "prettier --write app/static/*.{js,html,css}"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.13.0",
+    "globals": "16.5.0",
+    "prettier": "3.6.2"
+  }
+}

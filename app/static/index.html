@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#173d32" />
+    <title>Edxso · Education intelligence</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23173d32'/%3E%3Ctext x='17' y='47' fill='white' font-size='48' font-family='sans-serif'%3Ee%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar" id="workspace-navigation">
+        <a class="brand" href="#overview"
+          ><span class="brandmark">e<span>✦</span></span
+          ><span>edxso<span class="brand-dot">.</span></span></a
+        >
+        <div class="workspace">
+          <span class="school-icon">▦</span>
+          <div><strong>School workspace</strong><small>Demonstration environment</small></div>
+          <span class="tiny">⌄</span>
+        </div>
+        <p class="nav-label">WORKSPACE</p>
+        <nav aria-label="Main navigation">
+          <a href="#overview" data-nav="overview"><span>◫</span>Overview</a>
+          <a href="#assistant" data-nav="assistant"><span>☏</span>AI assistant <b>TRY IT</b></a>
+          <a href="#knowledge" data-nav="knowledge"><span>▤</span>Knowledge base</a>
+          <a href="#evaluation" data-nav="evaluation"><span>⌁</span>Model lab</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="side-card">
+            <span class="spark">✧</span
+            ><strong>Better conversations.<br />Stronger schools.</strong>
+            <p>Turn everyday questions into meaningful insights.</p>
+            <a href="#assistant">Meet your assistant <span>↗</span></a>
+          </div>
+          <a class="settings-link" href="#settings"><span>⚙</span> Settings & connection</a>
+          <div class="profile">
+            <div class="avatar">SW</div>
+            <div><strong>School workspace</strong><small>Sample data · local storage</small></div>
+          </div>
+        </div>
+      </aside>
+      <div class="main-shell">
+        <header class="topbar">
+          <button
+            id="menu-toggle"
+            aria-expanded="false"
+            aria-controls="workspace-navigation"
+            class="icon-button mobile-only"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div class="breadcrumb">
+            Workspace <span>/</span> <strong id="breadcrumb">Overview</strong>
+          </div>
+          <div class="top-actions">
+            <span class="demo-pill"><span></span> DEMO WORKSPACE</span
+            ><a href="/docs" target="_blank" rel="noopener" class="docs-link">API docs ↗</a>
+            <div class="avatar small">SW</div>
+          </div>
+        </header>
+        <main id="main" tabindex="-1">
+          <section class="view" id="view-overview">
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">YOUR SCHOOL, AT A GLANCE</p>
+                <h1>A little clarity. A bigger impact.</h1>
+                <p>Understand every enquiry. Make every conversation count.</p>
+              </div>
+              <button class="button secondary" id="export-button">↓ &nbsp; Export report</button>
+            </div>
+            <div class="hero">
+              <div class="hero-copy">
+                <span class="hero-tag">INTRODUCING YOUR EDUCATION COPILOT</span>
+                <h2>More time for students.<br />Less time on repeat.</h2>
+                <p>
+                  One helpful assistant for admissions, academics and<br class="desktop-only" />
+                  everything in between. Grounded in your school’s knowledge.
+                </p>
+                <a class="button cream" href="#assistant">Start a conversation <span>↗</span></a
+                ><small
+                  ><span class="status-dot"></span>
+                  <span id="hero-status">Checking connection…</span></small
+                >
+              </div>
+              <div class="hero-art" aria-hidden="true">
+                <div class="orbit orbit1"></div>
+                <div class="orbit orbit2"></div>
+                <div class="art-dot dot1"></div>
+                <div class="art-dot dot2"></div>
+                <div class="art-bubble bubble-top">
+                  <span class="bubble-icon">✧</span> A brighter school day.
+                </div>
+                <div class="art-center"><span>e</span><i>✧</i></div>
+                <div class="art-bubble bubble-bottom">
+                  <span class="check-icon">✓</span>
+                  <div>Answers with a source.<small>Built for your school community</small></div>
+                </div>
+                <div class="little-spark">✧</div>
+              </div>
+            </div>
+            <div class="section-heading">
+              <h2>Conversation pulse <span class="tag neutral">All time</span></h2>
+              <span class="muted" id="updated-label">Live workspace data</span>
+            </div>
+            <div class="metrics">
+              <article class="metric">
+                <div>Total enquiries <span>↗</span></div>
+                <strong id="metric-total">—</strong
+                ><small>Questions handled by your assistant</small>
+              </article>
+              <article class="metric">
+                <div>Conversations <span>☏</span></div>
+                <strong id="metric-sessions">—</strong><small>Unique browser sessions</small>
+              </article>
+              <article class="metric">
+                <div>Average response <span>◷</span></div>
+                <strong id="metric-latency">—</strong><small>Server answer processing time</small>
+              </article>
+              <article class="metric">
+                <div>Helpful answers <span>♡</span></div>
+                <strong id="metric-helpful">—</strong
+                ><small id="feedback-caption">Based on conversation feedback</small>
+              </article>
+            </div>
+            <div class="dashboard-grid">
+              <article class="panel enquiries-panel">
+                <div class="panel-heading">
+                  <div>
+                    <h3>What’s on their minds?</h3>
+                    <p>Enquiries by predicted intent</p>
+                  </div>
+                  <span class="round-icon">↗</span>
+                </div>
+                <div id="intent-chart" class="intent-chart"></div>
+                <div class="panel-footer">
+                  Local NLP classifier <span>5 intent categories</span>
+                </div>
+              </article>
+              <article class="panel activity-panel">
+                <div class="panel-heading">
+                  <div>
+                    <h3>A workspace that learns</h3>
+                    <p>Your path from question to insight</p>
+                  </div>
+                  <span class="tag green">CONNECTED WORKFLOW</span>
+                </div>
+                <div class="workflow">
+                  <div>
+                    <span>01</span>
+                    <section>
+                      <h4>Start with the right knowledge</h4>
+                      <p>8 source-backed FAQs, ready to explore.</p>
+                    </section>
+                    <a href="#knowledge" aria-label="Open knowledge base">↗</a>
+                  </div>
+                  <div>
+                    <span>02</span>
+                    <section>
+                      <h4>Have a helpful conversation</h4>
+                      <p>Gemini when connected. Reference answers otherwise.</p>
+                    </section>
+                    <a href="#assistant" aria-label="Open assistant">↗</a>
+                  </div>
+                  <div>
+                    <span>03</span>
+                    <section>
+                      <h4>See the bigger picture</h4>
+                      <p>Intent, latency and feedback, in one place.</p>
+                    </section>
+                    <a href="#evaluation" aria-label="Open model evaluation">↗</a>
+                  </div>
+                </div>
+                <div class="insight-note">
+                  <span>✧</span>
+                  <p>Purpose-built for education. Designed to keep a human in the loop.</p>
+                </div>
+              </article>
+            </div>
+            <article class="panel recent-panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Recent conversations</h3>
+                  <p>A closer look at the questions coming in</p>
+                </div>
+                <a class="text-link" href="#assistant">Open assistant ↗</a>
+              </div>
+              <div id="recent-conversations"></div>
+            </article>
+            <div class="footnote">
+              <span
+                >◈ &nbsp; Demo workspace · Illustrative school information, not official Edxso
+                policies.</span
+              ><span>Built for thoughtful education.</span>
+            </div>
+          </section>
+          <section class="view" id="view-assistant" hidden>
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">A HELPFUL FIRST CONVERSATION</p>
+                <h1>Your school’s new front desk.</h1>
+                <p>Try a question. See the answer, its sources and its predicted intent.</p>
+              </div>
+              <button class="button secondary" id="new-chat">＋ New conversation</button>
+            </div>
+            <div class="chat-layout">
+              <article class="panel chat-panel">
+                <div class="chat-header">
+                  <div class="assistant-icon">✧</div>
+                  <div>
+                    <h3>School assistant</h3>
+                    <p id="chat-status">Reference FAQ mode</p>
+                  </div>
+                  <span class="tag green">ONLINE</span>
+                </div>
+                <div
+                  id="messages"
+                  class="messages"
+                  aria-live="polite"
+                  aria-relevant="additions"
+                ></div>
+                <div class="composer-area">
+                  <form id="chat-form" aria-busy="false">
+                    <label class="sr-only" for="question">Your question</label
+                    ><textarea
+                      id="question"
+                      rows="1"
+                      maxlength="2000"
+                      placeholder="Ask about admissions, fees, transport…"
+                      required
+                      minlength="2"
+                    ></textarea
+                    ><button type="submit" id="send-button" aria-label="Send question">↑</button>
+                  </form>
+                  <small
+                    >Sample data only. Do not share children’s details, identity documents or
+                    payment information.</small
+                  >
+                </div>
+              </article>
+              <aside class="chat-aside">
+                <article class="panel">
+                  <p class="eyebrow">GOOD QUESTIONS START HERE</p>
+                  <h3>What would you like to know?</h3>
+                  <div class="suggestions">
+                    <button data-prompt="How do I apply for admission?">
+                      Admissions & enrollment <span>↗</span></button
+                    ><button data-prompt="What are the school fees?">
+                      Fees & payment options <span>↗</span></button
+                    ><button data-prompt="Is school bus transport available?">
+                      School transport <span>↗</span></button
+                    ><button data-prompt="Which curriculum does the school follow?">
+                      Curriculum & learning <span>↗</span>
+                    </button>
+                  </div>
+                </article>
+                <article class="transparency">
+                  <span>◈</span>
+                  <h3>Helpful. Not a replacement<br />for your school team.</h3>
+                  <p>
+                    Answers are grounded in demo FAQs. AI-generated replies can still be incorrect.
+                    Always verify important details with the school.
+                  </p>
+                  <button class="text-link" id="handoff-button">Contact school checklist ↗</button>
+                </article>
+                <article class="panel session-info">
+                  <h4>Under the hood</h4>
+                  <p>
+                    <span>Intent classification</span><strong>TF–IDF + Logistic Regression</strong>
+                  </p>
+                  <p><span>Answer engine</span><strong id="engine-label">Checking…</strong></p>
+                  <p><span>Conversation storage</span><strong>Local SQLite</strong></p>
+                  <small
+                    >Each question is answered independently. Previous messages are not sent to
+                    Gemini.</small
+                  >
+                </article>
+              </aside>
+            </div>
+          </section>
+          <section class="view" id="view-knowledge" hidden>
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">GROUNDED IN THE RIGHT INFORMATION</p>
+                <h1>Knowledge, with a source.</h1>
+                <p>The reference material behind every supported answer.</p>
+              </div>
+              <span class="tag green">8 DEMO REFERENCES</span>
+            </div>
+            <div class="notice">
+              <span>◈</span>
+              <p>
+                <strong>Sample content, not real school policies.</strong> Replace
+                <code>data/faqs.json</code> with approved information before using this with a
+                school. Restart the server after editing.
+              </p>
+            </div>
+            <div class="search-bar">
+              <span>⌕</span
+              ><input
+                id="knowledge-search"
+                type="search"
+                placeholder="Search questions, answers or categories…"
+                aria-label="Search knowledge base"
+              /><span id="knowledge-count">8 references</span>
+            </div>
+            <div id="knowledge-list" class="knowledge-grid"></div>
+          </section>
+          <section class="view" id="view-evaluation" hidden>
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">MEASURE BEFORE YOU SCALE</p>
+                <h1>A closer look at the model.</h1>
+                <p>Reproducible evaluation. Clear limitations. No inflated promises.</p>
+              </div>
+              <span class="tag neutral">SEED 42 · STRATIFIED SPLIT</span>
+            </div>
+            <div class="notice">
+              <span>◈</span>
+              <p>
+                <strong>Illustrative benchmark only.</strong> This model is trained on a tiny
+                synthetic English dataset. Its scores do not measure Gemini accuracy or performance
+                on real school conversations.
+              </p>
+            </div>
+            <div id="evaluation-content"></div>
+          </section>
+          <section class="view" id="view-settings" hidden>
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">YOUR WORKSPACE, YOUR CONTROLS</p>
+                <h1>Make the right connections.</h1>
+                <p>Keep credentials on the server. Keep control in your hands.</p>
+              </div>
+            </div>
+            <div class="settings-grid">
+              <article class="panel settings-card">
+                <span class="setting-icon">✧</span>
+                <h3>Gemini connection</h3>
+                <p id="provider-description">Checking server configuration…</p>
+                <div class="code-block">
+                  GEMINI_API_KEY=your_key_here<br />GEMINI_MODEL=gemini-3.1-flash-lite
+                </div>
+                <p>
+                  Add these to the server’s <code>.env</code> file and restart it. Never paste your
+                  API key into browser code or commit it to a repository.
+                </p>
+                <div class="connection-actions">
+                  <button class="button secondary" id="refresh-status">Refresh status</button
+                  ><button class="button primary" id="test-provider">Test live Gemini</button>
+                </div>
+                <div id="provider-diagnostics" class="provider-diagnostics" role="status">
+                  Unlock analytics to run a live connection test. Each test makes one Gemini
+                  request.
+                </div>
+                <small
+                  >A configured key is not proof of a working connection. Send a question to
+                  validate the provider; failures use a clearly labelled FAQ fallback.</small
+                >
+              </article>
+              <article class="panel settings-card">
+                <span class="setting-icon">⊞</span>
+                <h3>Analytics access</h3>
+                <p>
+                  Analytics contains conversation text. Unlock it with your server’s
+                  <code>ADMIN_TOKEN</code>.
+                </p>
+                <p id="unlock-status" role="status">Analytics is locked.</p>
+                <form id="unlock-form">
+                  <label for="admin-token">Admin token</label
+                  ><input
+                    id="admin-token"
+                    type="password"
+                    placeholder="Enter your server admin token"
+                    autocomplete="off"
+                    required
+                  /><button class="button primary" type="submit">Unlock analytics ↗</button>
+                </form>
+                <button class="text-link" id="lock-button">Lock analytics</button
+                ><small
+                  >The token is held in memory only and is cleared when the page reloads. An
+                  unguessable token is required for viewing, exporting and deleting conversation
+                  data.</small
+                >
+              </article>
+              <article class="panel settings-card wide">
+                <div class="operations-heading">
+                  <div>
+                    <h3>Workspace operations</h3>
+                    <p>Database, model and answer performance. No extra Gemini requests.</p>
+                  </div>
+                  <button class="button secondary" id="refresh-operations">
+                    Refresh monitoring
+                  </button>
+                </div>
+                <div id="operations-summary" class="operations-grid" aria-live="polite">
+                  Unlock analytics to view operational monitoring.
+                </div>
+                <ul id="operations-warnings" class="operations-warnings"></ul>
+                <small id="operations-meta"
+                  >Metrics are a snapshot, not an external alerting service.</small
+                >
+              </article>
+              <article class="panel settings-card wide">
+                <h3>Privacy & data controls</h3>
+                <p>
+                  Questions and answers are stored locally for analytics. Common emails and
+                  phone-like numbers are redacted before storage and Gemini requests, but this is
+                  not comprehensive personal-data detection. Relevant FAQ references and the current
+                  redacted question are sent to Google when Gemini is enabled. Browser chat display
+                  is session-only; refreshing clears the display, not the server records.
+                </p>
+                <div class="danger-row">
+                  <div>
+                    <strong>Delete conversation records</strong
+                    ><small
+                      >Permanently removes all stored questions, answers and feedback. Requires
+                      admin access.</small
+                    >
+                  </div>
+                  <button class="button danger" id="delete-data">Delete all records</button>
+                </div>
+              </article>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <div id="toast" role="status" hidden></div>
+    <dialog id="handoff-dialog">
+      <button id="close-dialog" class="icon-button dialog-close" aria-label="Close dialog">×</button
+      ><span class="setting-icon">☏</span>
+      <h2>Keep a human in the loop.</h2>
+      <p>
+        This workspace is a demonstration. No real school phone number, email or live handoff is
+        configured.
+      </p>
+      <h4>Before contacting your school</h4>
+      <ul>
+        <li>Use the official contact details on the school website.</li>
+        <li>Mention your topic: admissions, fees, academics or transport.</li>
+        <li>Ask the team to verify any information you saw here.</li>
+        <li>Do not send payment or identity details through this demo.</li>
+      </ul>
+      <p class="muted">This action does not contact anyone or create a support ticket.</p>
+    </dialog>
+  </body>
+</html>

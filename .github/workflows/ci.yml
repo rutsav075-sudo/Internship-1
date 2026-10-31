@@ -1,0 +1,58 @@
+name: Quality and regression checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check app scripts tests
+      - run: ruff format --check app scripts tests
+      - run: python -m pytest -q --cov=app --cov-fail-under=95
+      - run: python -m scripts.evaluate
+      - run: python -m scripts.experiment
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run lint
+      - run: npm run format:check
+  browser:
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ''
+      ADMIN_TOKEN: ci-only-regression-token
+      TEST_ADMIN_TOKEN: ci-only-regression-token
+      DATABASE_PATH: /tmp/edxso-browser.sqlite3
+      TEST_BASE_URL: http://127.0.0.1:8001
+      TEST_ALLOW_DELETE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Isolated no-key browser regression checks
+        run: |
+          uvicorn app.main:app --host 0.0.0.0 --port 8001 --workers 1 > /tmp/edxso-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          python -c "import httpx; client=httpx.Client(transport=httpx.HTTPTransport(retries=5),timeout=3); client.get('http://127.0.0.1:8001/api/ready').raise_for_status(); client.close()"
+          python -m scripts.browser_check
+          python -m scripts.browser_resilience

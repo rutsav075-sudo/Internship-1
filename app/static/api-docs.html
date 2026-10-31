@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Edxso API reference</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main>
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">EDXSO · DEVELOPER REFERENCE</p>
+          <h1>A small API. A thoughtful workflow.</h1>
+          <p>Version 1.2.0 · JSON request / response bodies · same-origin frontend</p>
+        </div>
+        <a href="/" class="button secondary">← Workspace</a>
+      </div>
+      <div class="notice">
+        <span>◈</span>
+        <p>
+          API examples use synthetic data. Never send children’s personal information. Protected
+          routes require <code>Authorization: Bearer YOUR_ADMIN_TOKEN</code>. The Gemini key is read
+          only from the server environment.
+        </p>
+      </div>
+      <article class="panel">
+        <div class="panel-heading">
+          <h3>Endpoints</h3>
+          <a href="/openapi.json" class="text-link">OpenAPI schema ↗</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>METHOD</th>
+                <th>PATH</th>
+                <th>ACCESS</th>
+                <th>DESCRIPTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GET</td>
+                <td>/api/health</td>
+                <td>Public</td>
+                <td>
+                  Server health, provider configuration status and configured model. Does not
+                  validate the API key.
+                </td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td>/api/knowledge</td>
+                <td>Public</td>
+                <td>Eight demo FAQ references.</td>
+              </tr>
+              <tr>
+                <td>POST</td>
+                <td>/api/chat</td>
+                <td>Public, rate-limited</td>
+                <td>Question → classification, retrieval, optional Gemini generation, storage.</td>
+              </tr>
+              <tr>
+                <td>POST</td>
+                <td>/api/feedback/{event_id}</td>
+                <td>Session capability</td>
+                <td>Set or replace a message rating. Requires the originating session UUID.</td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td>/api/evaluation</td>
+                <td>Public</td>
+                <td>Held-out classifier metrics and confusion matrix.</td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td>/api/analytics</td>
+                <td>Admin</td>
+                <td>
+                  All-time counts, intent distribution, latency, feedback, UTC-day counts and the 20
+                  latest conversations.
+                </td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td>/api/export</td>
+                <td>Admin</td>
+                <td>CSV export, with spreadsheet formula neutralization.</td>
+              </tr>
+              <tr>
+                <td>DELETE</td>
+                <td>/api/conversations</td>
+                <td>Admin</td>
+                <td>Permanently delete all conversation records and feedback.</td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td>/api/ready</td>
+                <td>Public</td>
+                <td>
+                  Readiness of loaded models and a database read. Does not validate Gemini or prove
+                  write permissions.
+                </td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td>/api/conversations?limit=20&amp;offset=0</td>
+                <td>Admin</td>
+                <td>
+                  Paginated conversations. Limit 1–100; offset 0–1,000,000. Session capabilities are
+                  not exposed.
+                </td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td>/api/provider/status</td>
+                <td>Admin</td>
+                <td>
+                  Process-local last verified success, sanitized failure category, counters and
+                  credential/quota cooldown.
+                </td>
+              </tr>
+              <tr>
+                <td>POST</td>
+                <td>/api/provider/check</td>
+                <td>Admin, rate-limited</td>
+                <td>
+                  Run one real generation with sample data. Uses API quota; does not store a
+                  conversation. Maximum 3 checks per client per minute.
+                </td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td>/api/operations</td>
+                <td>Admin</td>
+                <td>
+                  Read-only database/model/provider/traffic snapshot, including p95, fallback share,
+                  dataset fingerprint and clear metric scope. Does not invoke Gemini.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+      <div class="settings-grid dashboard-grid">
+        <article class="panel settings-card">
+          <h3>Send a question</h3>
+          <p>
+            Use a random UUID for each conversation session. Message length is 2–2,000 characters.
+            Each question is answered independently.
+          </p>
+          <pre class="code-block">
+POST /api/chat
+Content-Type: application/json
+
+{
+  "message": "How do I apply for admission?",
+  "session_id": "2ceee705-3b67-4f37-8d1f-2f03a5377351"
+}</pre
+          >
+          <p>
+            Returns <code>id, answer, intent, confidence, mode, latency_ms, sources, notice</code>.
+            Mode is <code>gemini</code>, <code>retrieval</code> or <code>no_match</code>. The model
+            confidence is not calibrated accuracy.
+          </p>
+        </article>
+        <article class="panel settings-card">
+          <h3>Rate an answer</h3>
+          <p>
+            Use the event ID returned by the chat request and the same session UUID. A repeated
+            request updates the existing rating instead of adding another vote.
+          </p>
+          <pre class="code-block">
+POST /api/feedback/{event_id}
+Content-Type: application/json
+
+{
+  "session_id": "2ceee705-3b67-4f37-8d1f-2f03a5377351",
+  "value": 1
+}</pre
+          >
+          <p>
+            <code>value</code> must be <code>1</code> (helpful) or <code>-1</code> (not helpful).
+            Returns <code>{"ok": true}</code>.
+          </p>
+        </article>
+        <article class="panel settings-card wide">
+          <h3>Error handling</h3>
+          <p>
+            <strong>401</strong> Missing, unconfigured or incorrect admin token.
+            <strong>404</strong> Feedback event not found in the provided session.
+            <strong>413</strong> Request body exceeds 16 KiB. <strong>422</strong> Invalid input.
+            <strong>429</strong> More than 20 questions per 60 seconds from a client address. Gemini
+            failures return a successful, explicitly labelled reference FAQ fallback when a source
+            is available. Raw provider errors and credentials are never returned.
+          </p>
+          <p>
+            The in-memory limiter is per process and uses the direct client address; a reverse proxy
+            may group users. Use an edge rate limiter and a trusted proxy policy for public
+            deployment. Server storage or infrastructure failures can still return HTTP 5xx; monitor
+            these in staging.
+          </p>
+        </article>
+      </div>
+      <div class="footnote">
+        Self-contained documentation. No external scripts or CDN dependencies.
+      </div>
+    </main>
+  </body>
+</html>

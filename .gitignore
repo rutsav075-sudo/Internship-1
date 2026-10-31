@@ -1,0 +1,26 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+data/*.sqlite3*
+artifacts/
+*.log
+
+node_modules/
+.coverage
+.ruff_cache/
+htmlcov/
+
+*.sqlite3*
+*.db
+*.db-*
+
+# Prevent accidental credential/config variants from being published.
+.env.*
+!.env.example
+.git-credentials
+.netrc
+.ssh/
+*.pem
+*.key
+.DS_Store
